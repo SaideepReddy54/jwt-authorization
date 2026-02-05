@@ -1,5 +1,6 @@
 package com.example.jwt.entity;
 
+
 import jakarta.persistence.*;
 import lombok.Data;
 

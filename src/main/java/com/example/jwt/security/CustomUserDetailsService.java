@@ -1,6 +1,7 @@
 package com.example.jwt.security;
 
 
+
 import com.example.jwt.entity.User;
 import com.example.jwt.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,4 +32,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         );
     }
 }
+
 

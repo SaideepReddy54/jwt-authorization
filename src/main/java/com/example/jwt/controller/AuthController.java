@@ -1,5 +1,7 @@
 package com.example.jwt.controller;
 
+
+
 import com.example.jwt.dto.*;
 import com.example.jwt.entity.User;
 import com.example.jwt.repository.UserRepository;
@@ -7,7 +9,9 @@ import com.example.jwt.security.JwtUtil;
 import org.springframework.security.authentication.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -39,13 +43,20 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest request) {
 
+        log.info("Login attempt for user: {}", request.getUsername());
+
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
-                        request.getPassword()));
+                        request.getPassword()
+                )
+        );
 
+        log.info("Login successful for user: {}", request.getUsername());
         return jwtUtil.generateToken(request.getUsername());
     }
+
+
 }
 
 

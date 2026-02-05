@@ -1,34 +1,36 @@
 package com.example.jwt.security;
 
 
+
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
+import java.security.Key;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    // ✅ generate strong 256-bit key
-    private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final String SECRET =
+            "this-is-a-very-secure-secret-key-for-jwt-256-bit";
 
-    // 🔹 generate token
+    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
+
     public String generateToken(String username) {
+
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
-                .signWith(SECRET_KEY)
+                .setExpiration(new Date(System.currentTimeMillis() + 3600000))
+                .signWith(key)
                 .compact();
     }
 
-    // 🔹 extract username
     public String extractUsername(String token) {
+
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
